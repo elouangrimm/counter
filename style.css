@@ -93,7 +93,7 @@ h1 {
     opacity: 0.9;
     border-radius: 50%;
     pointer-events: none;
-    animation: fall 1s ease-out forwards;
+    animation: fall 1.75s ease-out forwards;
     z-index: 10;
 }
 
