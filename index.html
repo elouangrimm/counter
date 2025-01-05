@@ -42,26 +42,17 @@
         let messagesPending = 0;
 
         function createConfetti(x, y) {
-            for (let i = 0; i < 20; i++) { // Increase number for a fuller effect
+            for (let i = 0; i < 7; i++) {
                 const confetti = document.createElement("div");
                 confetti.classList.add("confetti");
                 confetti.style.backgroundColor = getRandomColor();
-                confetti.style.left = `${x}px`;
-                confetti.style.top = `${y}px`;
-
-                // Generate random direction using angles
-                const angle = Math.random() * 2 * Math.PI; // Full circle (0 to 2π)
-                const dx = Math.cos(angle); // X direction multiplier
-                const dy = Math.sin(angle); // Y direction multiplier
-                confetti.style.setProperty("--dx", dx);
-                confetti.style.setProperty("--dy", dy);
-
+                confetti.style.left = `${x + getRandomOffset()}px`;
+                confetti.style.top = `${y + getRandomOffset()}px`;
                 document.body.appendChild(confetti);
-
-                // Remove the confetti after the animation is complete
+                
                 setTimeout(() => {
                     confetti.remove();
-                }, 2000); // Matches animation duration
+                }, 1000);
             }
         }
 
