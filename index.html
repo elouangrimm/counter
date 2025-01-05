@@ -21,16 +21,24 @@
     <div id="help-popup">
         <p>This is a counter. Push it and the number goes up for <i>everyone</i>. And I mean <i>Everyone.</i> Even those on the other clients...</p>
         <p><b>This</b> client for Counter was made by <a href="https://elouan.xyz/"><b>Elouan Grimm</b></a>. It is a fork of <a href="https://todepond.com/">Todepond</a>'s counter, but WITH THE SAME BACKEND!!! SO IT'S FEDERATED!!! this is basically just a more minimalistic and big picture version of theirs. :P The original is <a href="https://www.todepond.com/lab/counter/">Here</a>!</p>
+        <div class="confetti-checkbox">
+            <input type="checkbox" id="confetti-toggle" checked>
+            <label for="confetti-toggle">Confetti</label>
+        </div>
         <button id="close-help">Close</button>
     </div>
 
     <script type="module">
+        // ▔▔▔▔▔
+        // Variables
+        // ________
         const body = document.querySelector("body");
         const countDisplay = document.querySelector("#count");
         const loading = document.querySelector("#loading");
         const helpButton = document.querySelector("#help-button");
         const helpPopup = document.querySelector("#help-popup");
         const closeHelp = document.querySelector("#close-help");
+        const confettiToggle = document.querySelector("#confetti-toggle");
 
         let imaginedCount = getLocalCount();
         setDocumentCount(imaginedCount);
@@ -44,18 +52,27 @@
 
         let messagesPending = 0;
 
-        function createConfetti(x, y) {
-            for (let i = 0; i < 9; i++) {
-                const confetti = document.createElement("div");
-                confetti.classList.add("confetti");
-                confetti.style.backgroundColor = getRandomColor();
-                confetti.style.left = `${x + getRandomOffset()}px`;
-                confetti.style.top = `${y + getRandomOffset()}px`;
-                document.body.appendChild(confetti);
+        var enableConfetti = true
 
-                setTimeout(() => {
-                    confetti.remove();
-                }, 1000);
+        // ▔▔▔▔▔
+        // Confetti
+        // ________
+        function createConfetti(x, y) {
+            if (enableConfetti) {
+                for (let i = 0; i < 9; i++) {
+                    const confetti = document.createElement("div");
+                    confetti.classList.add("confetti");
+                    confetti.style.backgroundColor = getRandomColor();
+                    confetti.style.left = `${x + getRandomOffset()}px`;
+                    confetti.style.top = `${y + getRandomOffset()}px`;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 1000);
+                }
+            } else {
+                return
             }
         }
 
@@ -68,6 +85,9 @@
             return Math.floor(Math.random() * 100) - 25;
         }
 
+        // ▔▔▔▔▔
+        // Main Logic
+        // ________
         document.body.addEventListener('keypress', incrementCount);
 
         body.addEventListener("click", async (event) => {
@@ -104,6 +124,9 @@
             });
         }
 
+        // ▔▔▔▔▔
+        // Help Popup
+        // ________
         helpButton.addEventListener("click", () => {
             helpPopup.style.display = "block";
         });
@@ -112,6 +135,13 @@
             helpPopup.style.display = "none";
         });
 
+        confettiToggle.addEventListener("change", () => {
+            enableConfetti = confettiToggle.checked;
+        });
+
+        // ▔▔▔▔▔
+        // Get Counts
+        // ________
         function getLocalCount() {
             const count = parseInt(localStorage.getItem("cloud-count") ?? "0");
             return count;
@@ -151,6 +181,9 @@
             imaginedCount = remoteCount;
         }
 
+        // ▔▔▔▔▔
+        // Refresh
+        // ________
         async function refreshCount() {
             if (loading.style.display === "block") {
                 return;
