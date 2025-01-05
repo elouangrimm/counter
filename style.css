@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #121212;
+    background-color: #181d27;
     color: #ffffff;
     font-family: Arial, sans-serif;
     user-select: none;
@@ -13,7 +13,7 @@ body {
 }
 
 h1 {
-    font-size: 100px;
+    font-size: 150px;
     text-align: center;
 }
 
@@ -83,4 +83,26 @@ h1 {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #46ff80;
+    opacity: 0.9;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: fall 1s ease-out forwards;
+    z-index: 10;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        transform: translateY(300px) scale(0.5);
+        opacity: 0;
+    }
 }
