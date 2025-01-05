@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter | Tadi Lab</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1 id="count">0</h1>
+    <div id="loading"></div>
+    <button id="help-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm.25 16.75a1.25 1.25 0 1 1 1.25-1.25 1.25 1.25 0 0 1-1.25 1.25zm2.1-6.72-.83.87a1.34 1.34 0 0 0-.39 1v.4h-1.5v-.4a2.85 2.85 0 0 1 .83-2l1-1.1a1.37 1.37 0 0 0 .4-1 1.5 1.5 0 1 0-3 0H9.45a3 3 0 0 1 6 0 2.87 2.87 0 0 1-.1.78 3 3 0 0 1-.75 1.25z" />
+        </svg>
+    </button>
+    <div id="help-popup">
+        <p>This is a counter. Push it and the number goes up for <i>everyone</i>.</p>
+        <button id="close-help">Close</button>
+    </div>
+
+    <script type="module">
+        const body = document.querySelector("body");
+        const countDisplay = document.querySelector("#count");
+        const loading = document.querySelector("#loading");
+        const helpButton = document.querySelector("#help-button");
+        const helpPopup = document.querySelector("#help-popup");
+        const closeHelp = document.querySelector("#close-help");
+
+        let imaginedCount = getLocalCount();
+        setDocumentCount(imaginedCount);
+        pullRemoteCount().then(() => {
+            if (messagesPending === 0) {
+                loading.style.display = "none";
+            }
+        });
+
+        setInterval(refreshCount, 5000);
+
+        let messagesPending = 0;
+
+        body.addEventListener("click", async (event) => {
+            if (event.target === helpButton || helpPopup.contains(event.target)) {
+                return;
+            }
+
+            imaginedCount = imaginedCount + 1;
+            setDocumentCount(imaginedCount);
+            setLocalCount(imaginedCount);
+            loading.style.display = "block";
+            window.onbeforeunload = () => true;
+            messagesPending++;
+
+            incrementRemoteCount().then((remoteCount) => {
+                if (remoteCount > imaginedCount) {
+                    imaginedCount = remoteCount;
+                    setDocumentCount(remoteCount);
+                    setLocalCount(remoteCount);
+                }
+
+                messagesPending--;
+
+                if (messagesPending === 0) {
+                    loading.style.display = "none";
+                    window.onbeforeunload = null;
+                }
+            });
+        });
+
+        helpButton.addEventListener("click", () => {
+            helpPopup.style.display = "block";
+        });
+
+        closeHelp.addEventListener("click", () => {
+            helpPopup.style.display = "none";
+        });
+
+        function getLocalCount() {
+            const count = parseInt(localStorage.getItem("cloud-count") ?? "0");
+            return count;
+        }
+
+        function setLocalCount(count) {
+            localStorage.setItem("cloud-count", count);
+        }
+
+        function setDocumentCount(count) {
+            countDisplay.textContent = count;
+        }
+
+        async function getRemoteCount() {
+            const response = await fetch(
+                "https://todepond-getCloudLabCount.web.val.run"
+            );
+            return await response.json();
+        }
+
+        async function incrementRemoteCount() {
+            return fetch("https://todepond-superSecretIncrement.web.val.run").then(
+                async (response) => {
+                    if (!response.ok) {
+                        alert("Error sending click :(");
+                        throw new Error("Failed to increment count");
+                    }
+                    return response.json();
+                }
+            );
+        }
+
+        async function pullRemoteCount() {
+            const remoteCount = await getRemoteCount();
+            setDocumentCount(remoteCount);
+            setLocalCount(remoteCount);
+            imaginedCount = remoteCount;
+        }
+
+        async function refreshCount() {
+            if (loading.style.display === "block") {
+                return;
+            }
+            const remoteCount = await getRemoteCount();
+            if (remoteCount > imaginedCount) {
+                imaginedCount = remoteCount;
+                setDocumentCount(remoteCount);
+                setLocalCount(remoteCount);
+            }
+        }
+    </script>
+</body>
+
+</html>
