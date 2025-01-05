@@ -19,7 +19,8 @@
         </svg>
     </button>
     <div id="help-popup">
-        <p>This is a counter. Push it and the number goes up for <i>everyone</i>.</p>
+        <p>This is a counter. Push it and the number goes up for <i>everyone</i>. And I mean <i>Everyone.</i> Even those on the other clients...</p>
+        <p><b>This</b> client for Counter was made by <a href="https://elouan.xyz/"><b>Elouan Grimm</b></a>. It is a fork of <a href="https://todepond.com/">Todepond</a>'s counter, but WITH THE SAME BACKEND!!! SO IT'S FEDERATED!!! this is basically just a more minimalistic and big picture version of theirs. :P The original is <a href="https://www.todepond.com/lab/counter/">Here</a>!</p>
         <button id="close-help">Close</button>
     </div>
 
@@ -64,7 +65,7 @@
         }
 
         function getRandomOffset() {
-            return Math.floor(Math.random() * 100) - 25; // Random offset between -25 and 25
+            return Math.floor(Math.random() * 100) - 25;
         }
 
         document.body.addEventListener('keypress', incrementCount);
