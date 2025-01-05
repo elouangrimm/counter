@@ -25,6 +25,16 @@
             <input type="checkbox" id="confetti-toggle" checked>
             <label for="confetti-toggle">Confetti</label>
         </div>
+        <div id="custom-style-container">
+            <button id="toggle-style-editor">Custom Styling ▼</button>
+            <div id="style-editor" style="display: none;">
+                <textarea id="custom-style-textarea" placeholder="Enter your custom CSS here"></textarea>
+                <div id="style-buttons">
+                    <button id="save-style">Save</button>
+                    <button id="reset-style">Reset to Default</button>
+                </div>
+            </div>
+        </div>
         <button id="close-help">Close</button>
     </div>
 
@@ -39,6 +49,11 @@
         const helpPopup = document.querySelector("#help-popup");
         const closeHelp = document.querySelector("#close-help");
         const confettiToggle = document.querySelector("#confetti-toggle");
+        const toggleStyleEditor = document.querySelector("#toggle-style-editor");
+        const styleEditor = document.querySelector("#style-editor");
+        const customStyleTextarea = document.querySelector("#custom-style-textarea");
+        const saveStyleButton = document.querySelector("#save-style");
+        const resetStyleButton = document.querySelector("#reset-style");
 
         let imaginedCount = getLocalCount();
         setDocumentCount(imaginedCount);
@@ -194,6 +209,43 @@
                 setDocumentCount(remoteCount);
                 setLocalCount(remoteCount);
             }
+        }
+
+        // ▔▔▔▔▔
+        // Custom Styling
+        // ________
+        const savedStyle = localStorage.getItem("custom-style");
+        if (savedStyle) {
+            applyCustomStyle(savedStyle);
+            customStyleTextarea.value = savedStyle;
+        }
+
+        toggleStyleEditor.addEventListener("click", () => {
+            const isVisible = styleEditor.style.display === "block";
+            styleEditor.style.display = isVisible ? "none" : "block";
+            toggleStyleEditor.textContent = `Custom Styling ${isVisible ? '▼' : '▲'}`;
+        });
+
+        saveStyleButton.addEventListener("click", () => {
+            const customStyle = customStyleTextarea.value;
+            localStorage.setItem("custom-style", customStyle);
+            applyCustomStyle(customStyle);
+        });
+
+        resetStyleButton.addEventListener("click", () => {
+            localStorage.removeItem("custom-style");
+            applyCustomStyle("");
+            customStyleTextarea.value = "";
+        });
+
+        function applyCustomStyle(style) {
+            let styleElement = document.querySelector("#custom-style-element");
+            if (!styleElement) {
+                styleElement = document.createElement("style");
+                styleElement.id = "custom-style-element";
+                document.head.appendChild(styleElement);
+            }
+            styleElement.textContent = style;
         }
     </script>
 </body>
