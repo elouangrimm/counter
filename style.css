@@ -15,7 +15,7 @@ body {
 h1 {
     font-size: 150px;
     text-align: center;
-    z-index: 50; /* MAKE THE NUMBER IN FRONT OF EVERYTHING MUAH HA HA HA */
+    z-index: 50; /* MAKE THE NUMBER IN FRONT OF EVERYTHING MUAH HA HA HA */ /* ...Oh wait not the popup */
 }
 
 #loading {
@@ -74,6 +74,7 @@ h1 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     display: none;
     text-align: center;
+    z-index: 100;
 }
 
 #help-popup button {
