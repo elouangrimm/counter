@@ -25,6 +25,7 @@
             <input type="checkbox" id="confetti-toggle" checked>
             <label for="confetti-toggle">Confetti</label>
         </div>
+        <!-- USER CUSTOM STYLING
         <div id="custom-style-container">
             <button id="toggle-style-editor">Custom Styling ▼</button>
             <div id="style-editor" style="display: none;">
@@ -35,6 +36,7 @@
                 </div>
             </div>
         </div>
+        -->
         <button id="close-help">Close</button>
     </div>
 
@@ -48,12 +50,12 @@
         const helpButton = document.querySelector("#help-button");
         const helpPopup = document.querySelector("#help-popup");
         const closeHelp = document.querySelector("#close-help");
-        const confettiToggle = document.querySelector("#confetti-toggle");
+        const confettiToggle = document.querySelector("#confetti-toggle"); /*
         const toggleStyleEditor = document.querySelector("#toggle-style-editor");
         const styleEditor = document.querySelector("#style-editor");
         const customStyleTextarea = document.querySelector("#custom-style-textarea");
         const saveStyleButton = document.querySelector("#save-style");
-        const resetStyleButton = document.querySelector("#reset-style");
+        const resetStyleButton = document.querySelector("#reset-style"); */
 
         let imaginedCount = getLocalCount();
         setDocumentCount(imaginedCount);
@@ -213,7 +215,8 @@
 
         // ▔▔▔▔▔
         // Custom Styling
-        // ________
+        // ________ 
+        /*
         const savedStyle = localStorage.getItem("custom-style");
         if (savedStyle) {
             applyCustomStyle(savedStyle);
@@ -246,7 +249,7 @@
                 document.head.appendChild(styleElement);
             }
             styleElement.textContent = style;
-        }
+        } */
     </script>
 </body>
 
