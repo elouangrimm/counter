@@ -67,6 +67,7 @@
             return Math.floor(Math.random() * 100) - 25; // Random offset between -25 and 25
         }
 
+        document.body.addEventListener('keypress', incrementCount);
 
         body.addEventListener("click", async (event) => {
             if (event.target === helpButton || helpPopup.contains(event.target)) {
@@ -75,6 +76,10 @@
 
             createConfetti(event.clientX, event.clientY);
 
+            incrementCount()
+        });
+
+        function incrementCount() {
             imaginedCount = imaginedCount + 1;
             setDocumentCount(imaginedCount);
             setLocalCount(imaginedCount);
@@ -96,8 +101,7 @@
                     window.onbeforeunload = null;
                 }
             });
-        });
-
+        }
 
         helpButton.addEventListener("click", () => {
             helpPopup.style.display = "block";
